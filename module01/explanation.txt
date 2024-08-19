@@ -25,3 +25,26 @@ II. Declarative Programming: SQL (Structured Query Language)
     oop: class -> object
          encapsulation -> data + method
          information hiding, ocp, srp, isp, ...
+
+    Higher Order Function -> Pure Function
+    STL: transform, accumulate, ...
+      i. c-like functions
+         int topla(int x,int y){
+            return x+y;
+         }
+     ii. lambda expression -> pure
+         [z](int x,int y){return x+y;} -- compiler --> functor
+    iii. function object
+         struct Topla { // function object -> functor
+            int operator()(int x,int y){ // pure
+                return x+y;
+            }
+         };
+    fp -> immutable -> ready to be parallelized
+
+    // Mixed Paradigm
+    // oop
+    // fp
+    // aop
+    // gp
+    // procedural programming

@@ -43,15 +43,14 @@ auto map_file_to_line_counts(const string &file_name) {
     return line_count;
 }
 // problem: count total lines count
-int z=42;
-// pure function
-auto topla(int x, int y){ // no longer a pure function
-    ++z;
-    return x+y+z;
-}
 
+struct Topla { // function object -> functor
+    int operator()(int x,int y){
+        return x+y;
+    }
+};
 int main() {
-    z++;
+    int z = 0;
     // Declarative Programming -> functional programming
     // describe solution
     // files -> transform -> line counts -> reduce/accumulate -> solution
@@ -61,7 +60,7 @@ int main() {
     // auto map_file_to_line_counts = ???; // Pure function
     transform( files.begin(),files.end(), back_inserter(line_counts),map_file_to_line_counts);
     // 2. reduce -> accumulate: Higher Order Function
-    auto total_line_count = accumulate(line_counts.begin(),line_counts.end(),0,topla);
+    auto total_line_count = accumulate(line_counts.begin(),line_counts.end(),0,Topla{});
     cout << "total line count: " << total_line_count << endl;
     // imperative -> total line count: 447152
     // descriptive -> total line count: 447152
