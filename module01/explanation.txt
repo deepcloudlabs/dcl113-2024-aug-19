@@ -42,6 +42,34 @@ II. Declarative Programming: SQL (Structured Query Language)
          };
     fp -> immutable -> ready to be parallelized
 
+    -----------------------------
+    C#     -> LINQ -> parallel
+    Java   -> Stream API -> parallel
+    -----------------------------
+    C++    -> ranges -> serial -> C++26 -> parallel
+              https://github.com/pdziepak/ranges-gpu
+           auto on_cpu = std::vector<int>{10, 20, 30, 40, 50, 60, 70, 80, 90};
+           auto result = ranges_gpu::view::zip(
+                    ranges_gpu::view::iota(1, 10),
+                    on_cpu | ranges_gpu::view::to_gpu()
+                )
+            | ranges_gpu::view::transform([] __device__(ranges_gpu::pair<int, int> v) {
+                    return v.first + v.second * 2;
+                })
+            | ranges_gpu::view::filter([] __device__(int x) {
+                    return x % 2 && x / 10 <= 8;
+                })
+            | ranges_gpu::action::to_cpu()
+            ;
+    -----------------------------
+    nVidia         -> CUDA  : GPU-only
+                      C/C++
+    vendor neutral -> OpenCL: CPU + GPU
+                      C/C++
+    -----------------------------
+    JS     -> filter/map/reduce -> wasm
+    Python -> filter/map/reduce, serial
+    -----------------------------
     // Mixed Paradigm
     // oop
     // fp
