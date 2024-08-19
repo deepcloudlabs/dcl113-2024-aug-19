@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "module01::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-module01-Debug-99a8d713215eb2a2eb3b.json",
-					"name" : "module01",
+					"id" : "exercise01::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-exercise01-Debug-9a97e6409441ad902670.json",
+					"name" : "exercise01",
 					"projectIndex" : 0
 				}
 			]
