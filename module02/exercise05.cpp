@@ -29,16 +29,23 @@ int main() {
     for_each(employees.begin(), employees.end(), PrintEmployee{});
 
     // HoF
-    auto group_by_gender = [](map<employee::gender_t,pair<double,int>> group,employee &emp){
-        group[emp.getMGender()].first += emp.getMSalary();
-        group[emp.getMGender()].second++;
+    auto group_by_department = [](map<employee::department_t,double> group,const employee &emp){
+        group[emp.getMDepartment()] += emp.getMSalary();
         return group;
     };
-    map<employee::gender_t,pair<double,int>> employees_by_gender{{employee::female,{0.0,0}},{employee::male,{0.0,0}}};
-    auto result = accumulate(employees.begin(),employees.end(),employees_by_gender,group_by_gender);
-    cout << result[employee::female].first << "," << result[employee::female].second <<  endl;
-    cout << result[employee::male].first << "," << result[employee::male].second <<  endl;
-    cout << "average salary of males: " << result[employee::male].first / result[employee::male].second << endl ;
-    cout << "average salary of females: " << result[employee::female].first / result[employee::female].second << endl ;
+    map<employee::department_t,double> employee_total_salaries_by_department{
+        {employee::department_t::it,0.0},
+        {employee::department_t::sales,0.0},
+        {employee::department_t::hr,0.0},
+        {employee::department_t::finance,0.0}
+    };
+    auto result = accumulate(employees.begin(),employees.end(),employee_total_salaries_by_department,group_by_department);
+    for_each(result.begin(),result.end(),
+             [](const pair<employee::department_t,double>& entry){
+        cout << employee::department_name[entry.first] << ": " << entry.second << endl;
+    });
+    for (const auto& [department, total_salary] : result) {
+        cout << employee::department_name[department] << ": " << total_salary << endl;
+    }
     return 0;
 }

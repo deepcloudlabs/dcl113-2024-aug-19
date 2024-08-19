@@ -78350,13 +78350,14 @@ using namespace std;
 
 class employee {
 public:
+    constexpr static const char* gender_name[] = {"female", "male"};
+    constexpr static const char* department_name[] = {"it", "finance","hr","sales"};
     enum gender_t {
         female, male
     };
     enum department_t {
         it, finance, hr, sales
     };
-
     employee(const string &mFirstName, const string &mLastName, department_t mDepartment, gender_t mGender,
              double mSalary, const string &mIban, int mBirthYear);
 
@@ -78413,6 +78414,7 @@ int main() {
     for_each(employees.begin(), employees.end(), PrintEmployee{});
 
     vector<employee> female_employees{};
+
     copy_if(employees.begin(),employees.end(), back_inserter(female_employees),[](employee& emp){return emp.getMGender() == employee::female;});
 
     vector<double> salaries{};

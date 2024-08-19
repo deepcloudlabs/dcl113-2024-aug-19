@@ -27,18 +27,32 @@ int main() {
             {"jack",   "bauer",    employee::department_t::it,      employee::gender_t::male,   150'000, "tr500", 1956}
     };
     for_each(employees.begin(), employees.end(), PrintEmployee{});
+    using SalaryInfo = pair<double, int>;
+    using GenderSalaryMap = map<employee::gender_t, SalaryInfo>;
+    using DepartmentGenderMap = map<employee::department_t, GenderSalaryMap>;
 
+    using grup_by_dept_then_by_gender_t = map<employee::department_t, GenderSalaryMap>;
     // HoF
-    auto group_by_gender = [](map<employee::gender_t,pair<double,int>> group,employee &emp){
-        group[emp.getMGender()].first += emp.getMSalary();
-        group[emp.getMGender()].second++;
+    auto accumulate_salary = [](grup_by_dept_then_by_gender_t group, employee &emp) {
+        auto &salary_info = group[emp.getMDepartment()][emp.getMGender()];
+        salary_info.first += emp.getMSalary();
+        salary_info.second++;
         return group;
     };
-    map<employee::gender_t,pair<double,int>> employees_by_gender{{employee::female,{0.0,0}},{employee::male,{0.0,0}}};
-    auto result = accumulate(employees.begin(),employees.end(),employees_by_gender,group_by_gender);
-    cout << result[employee::female].first << "," << result[employee::female].second <<  endl;
-    cout << result[employee::male].first << "," << result[employee::male].second <<  endl;
-    cout << "average salary of males: " << result[employee::male].first / result[employee::male].second << endl ;
-    cout << "average salary of females: " << result[employee::female].first / result[employee::female].second << endl ;
+    DepartmentGenderMap salary_by_dept_gender{
+            {employee::it,      {{employee::female, {0.0, 0}}, {employee::male, {0.0, 0}}}},
+            {employee::sales,   {{employee::female, {0.0, 0}}, {employee::male, {0.0, 0}}}},
+            {employee::finance, {{employee::female, {0.0, 0}}, {employee::male, {0.0, 0}}}},
+            {employee::hr,      {{employee::female, {0.0, 0}}, {employee::male, {0.0, 0}}}}
+    };
+    auto result = accumulate(employees.begin(), employees.end(), salary_by_dept_gender, accumulate_salary);
+    for (const auto &[dept, gender_map] : result) {
+        for (const auto &[gender, salary_info] : gender_map) {
+            double average_salary = salary_info.first / salary_info.second;
+            cout << employee::department_name[dept] << ": "
+                 << employee::gender_name[gender]
+                 << " average salary: " << average_salary << endl;
+        }
+    }
     return 0;
 }

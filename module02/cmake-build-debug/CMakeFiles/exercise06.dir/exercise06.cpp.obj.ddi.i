@@ -1,8 +1,8 @@
-# 0 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise04.cpp"
+# 0 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise06.cpp"
 # 1 "C:\\var\\workspace\\github\\dcl113-2024-aug-19\\module02\\cmake-build-debug//"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise04.cpp"
+# 1 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise06.cpp"
 # 1 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/iostream" 1 3
 # 36 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/iostream" 3
        
@@ -68051,7 +68051,7 @@ namespace std
 # 85 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/iostream" 3
 
 }
-# 2 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise04.cpp" 2
+# 2 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise06.cpp" 2
 # 1 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/vector" 1 3
 # 58 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/vector" 3
        
@@ -72972,7 +72972,7 @@ namespace std
     }
 
 }
-# 3 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise04.cpp" 2
+# 3 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise06.cpp" 2
 # 1 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/map" 1 3
 # 58 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/map" 3
        
@@ -77539,7 +77539,7 @@ namespace std
     }
 
 }
-# 4 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise04.cpp" 2
+# 4 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise06.cpp" 2
 # 1 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/algorithm" 1 3
 # 58 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/algorithm" 3
        
@@ -82182,7 +82182,7 @@ lexicographical_compare(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _
 
 }
 # 86 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/algorithm" 2 3
-# 5 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise04.cpp" 2
+# 5 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise06.cpp" 2
 # 1 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/numeric" 1 3
 # 58 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/numeric" 3
        
@@ -82903,7 +82903,7 @@ adjacent_difference(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _Forwa
 
 }
 # 740 "C:/DEVEL/stage/opt/mingw64-14.2.0/include/c++/14.2.0/numeric" 2 3
-# 6 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise04.cpp" 2
+# 6 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise06.cpp" 2
 # 1 "C:/var/workspace/github/dcl113-2024-aug-19/module02/employee.h" 1
 
 
@@ -82955,7 +82955,7 @@ private:
 };
 
 ostream& operator<<(ostream& os,employee& emp);
-# 7 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise04.cpp" 2
+# 7 "C:/var/workspace/github/dcl113-2024-aug-19/module02/exercise06.cpp" 2
 
 using namespace std;
 
@@ -82979,18 +82979,32 @@ int main() {
             {"jack", "bauer", employee::department_t::it, employee::gender_t::male, 150'000, "tr500", 1956}
     };
     for_each(employees.begin(), employees.end(), PrintEmployee{});
+    using SalaryInfo = pair<double, int>;
+    using GenderSalaryMap = map<employee::gender_t, SalaryInfo>;
+    using DepartmentGenderMap = map<employee::department_t, GenderSalaryMap>;
 
+    using grup_by_dept_then_by_gender_t = map<employee::department_t, GenderSalaryMap>;
 
-    auto group_by_gender = [](map<employee::gender_t,pair<double,int>> group,employee &emp){
-        group[emp.getMGender()].first += emp.getMSalary();
-        group[emp.getMGender()].second++;
+    auto accumulate_salary = [](grup_by_dept_then_by_gender_t group, employee &emp) {
+        auto &salary_info = group[emp.getMDepartment()][emp.getMGender()];
+        salary_info.first += emp.getMSalary();
+        salary_info.second++;
         return group;
     };
-    map<employee::gender_t,pair<double,int>> employees_by_gender{{employee::female,{0.0,0}},{employee::male,{0.0,0}}};
-    auto result = accumulate(employees.begin(),employees.end(),employees_by_gender,group_by_gender);
-    cout << employee::gender_name[employee::female] << " -> " << result[employee::female].first << "," << result[employee::female].second << endl;
-    cout << employee::gender_name[employee::male] << "   -> " <<result[employee::male].first << "," << result[employee::male].second << endl;
-    cout << "average salary of males: " << result[employee::male].first / result[employee::male].second << endl ;
-    cout << "average salary of females: " << result[employee::female].first / result[employee::female].second << endl ;
+    DepartmentGenderMap salary_by_dept_gender{
+            {employee::it, {{employee::female, {0.0, 0}}, {employee::male, {0.0, 0}}}},
+            {employee::sales, {{employee::female, {0.0, 0}}, {employee::male, {0.0, 0}}}},
+            {employee::finance, {{employee::female, {0.0, 0}}, {employee::male, {0.0, 0}}}},
+            {employee::hr, {{employee::female, {0.0, 0}}, {employee::male, {0.0, 0}}}}
+    };
+    auto result = accumulate(employees.begin(), employees.end(), salary_by_dept_gender, accumulate_salary);
+    for (const auto &[dept, gender_map] : result) {
+        for (const auto &[gender, salary_info] : gender_map) {
+            double average_salary = salary_info.first / salary_info.second;
+            cout << employee::department_name[dept] << ": "
+                 << employee::gender_name[gender]
+                 << " average salary: " << average_salary << endl;
+        }
+    }
     return 0;
 }

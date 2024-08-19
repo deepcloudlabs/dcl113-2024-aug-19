@@ -1,0 +1,5 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles/exercise06.dir/exercise06.cpp.obj: dyndep
+
+build CMakeFiles/exercise06.dir/employee.cpp.obj: dyndep
+

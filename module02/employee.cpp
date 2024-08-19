@@ -51,9 +51,9 @@ ostream& operator<<(ostream& os,employee& emp){
        << ", last name: " << emp.getMLastName()
        << ", salary: " << emp.getMSalary()
        << ", iban: " << emp.getMIban()
-       << ", department: " << emp.getMDepartment()
+       << ", department: " << employee::department_name[emp.getMDepartment()]
        << ", birth year: " << emp.getMBirthYear()
-       << ", gender: " << emp.getMGender()
+       << ", gender: " << employee::gender_name[emp.getMGender()]
        << "]";
     return os;
 }

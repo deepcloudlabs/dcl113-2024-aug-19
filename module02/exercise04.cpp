@@ -29,15 +29,15 @@ int main() {
     for_each(employees.begin(), employees.end(), PrintEmployee{});
 
     // HoF
-    auto group_by_gender = [](map<employee::gender_t,pair<double,int>> group,employee &emp){
+    auto group_by_gender = [](map<employee::gender_t,pair<double,int>> group,const employee &emp){
         group[emp.getMGender()].first += emp.getMSalary();
         group[emp.getMGender()].second++;
         return group;
     };
     map<employee::gender_t,pair<double,int>> employees_by_gender{{employee::female,{0.0,0}},{employee::male,{0.0,0}}};
     auto result = accumulate(employees.begin(),employees.end(),employees_by_gender,group_by_gender);
-    cout << result[employee::female].first << "," << result[employee::female].second <<  endl;
-    cout << result[employee::male].first << "," << result[employee::male].second <<  endl;
+    cout << employee::gender_name[employee::female] << " -> " << result[employee::female].first << "," << result[employee::female].second <<  endl;
+    cout << employee::gender_name[employee::male]   << "   -> " <<result[employee::male].first << "," << result[employee::male].second <<  endl;
     cout << "average salary of males: " << result[employee::male].first / result[employee::male].second << endl ;
     cout << "average salary of females: " << result[employee::female].first / result[employee::female].second << endl ;
     return 0;
