@@ -1,0 +1,27 @@
+ I. Imperative Programming: procedural programming, oop, aop, gp, ...
+   Modeling -> Data/Behaviour
+   Flow/Algorithm -> Solution Design
+   Global Data -> implementation of algorithm -> Solution
+   How to solve the problem: Problem -> Solution
+II. Declarative Programming: SQL (Structured Query Language)
+    Data -> Describe Solution -> Solution
+            What the solution is
+
+    select sum(population)
+    from countries
+    where continent='Asia'
+
+    -> functional programming <-
+    i. HoF ii. Pure function
+    a. lazy evaluation
+    b. partial function
+    c. generator function
+    d. async function
+    fp's function -> variable, attribute, parameter, return
+    immutability
+    functional programming (c++) -> reactive programming (library: rxcpp)
+
+    C++: fp -> oop
+    oop: class -> object
+         encapsulation -> data + method
+         information hiding, ocp, srp, isp, ...
