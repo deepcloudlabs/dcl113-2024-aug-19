@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <parallel/numeric>
 #include <string>
+#include <execution>
 #include <fstream>
 
 using namespace std;
@@ -13,10 +15,6 @@ vector<string> files{
         string("c:\\tmp\\algotrading-market-apis.txt"),
         string("c:\\tmp\\war-and-peace.txt")
 };
-int total_line_count = 0;
-//endregion
-
-//region procedures
 inline
 auto is_new_line(char c){
     return c == '\n';
@@ -32,7 +30,7 @@ read_one_char(ifstream& input_file,char &c){
     return input_file.get(c);
 }
 
-auto count_lines_imperative(const string &file_name) {
+auto map_file_to_line_counts(const string &file_name) {
     ifstream input_file = open_file(file_name);
     auto line_count = 0;
     char c;
@@ -44,26 +42,24 @@ auto count_lines_imperative(const string &file_name) {
     }
     return line_count;
 }
-
-auto count_lines_imperative(const vector<string> &files) {
-    auto total_line_count = 0;
-    for (auto &file: ::files) { // external loop
-        auto line_count = count_lines_imperative(file);
-        total_line_count += line_count;
-    }
-    return total_line_count;
-}
-//endregion
-
 // problem: count total lines count
+auto topla(int x, int y){
+    return x+y;
+}
+
 int main() {
-    // Imperative Programming -> procedural programming
-    // algorithm: for-each
-    // external loop: out of container(files)
-    total_line_count = count_lines_imperative(files);
+    // Declarative Programming -> functional programming
+    // describe solution
+    // files -> transform -> line counts -> reduce/accumulate -> solution
+    // pipeline
+    vector<int> line_counts{};
+    // 1. transform: Higher Order Function
+    // auto map_file_to_line_counts = ???; // Pure function
+    transform( files.begin(),files.end(), back_inserter(line_counts),map_file_to_line_counts);
+    // 2. reduce -> accumulate: Higher Order Function
+    auto total_line_count = accumulate(line_counts.begin(),line_counts.end(),0,topla);
     cout << "total line count: " << total_line_count << endl;
-    // total line count: 447152
+    // imperative -> total line count: 447152
+    // descriptive -> total line count: 447152
     return 0;
 }
-
-
