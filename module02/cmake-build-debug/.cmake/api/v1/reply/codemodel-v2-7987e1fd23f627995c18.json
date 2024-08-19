@@ -17,7 +17,10 @@
 					[
 						0,
 						1,
-						2
+						2,
+						3,
+						4,
+						5
 					]
 				}
 			],
@@ -34,7 +37,10 @@
 					[
 						0,
 						1,
-						2
+						2,
+						3,
+						4,
+						5
 					]
 				}
 			],
@@ -59,6 +65,27 @@
 					"id" : "exercise03::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-exercise03-Debug-8475bd15fd920445324f.json",
 					"name" : "exercise03",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "exercise04::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-exercise04-Debug-26f6635db2b5e1c4522e.json",
+					"name" : "exercise04",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "exercise05::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-exercise05-Debug-0d1828dc49fd484ecb28.json",
+					"name" : "exercise05",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "exercise06::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-exercise06-Debug-a1fa76e1a56fa87a66f9.json",
+					"name" : "exercise06",
 					"projectIndex" : 0
 				}
 			]
