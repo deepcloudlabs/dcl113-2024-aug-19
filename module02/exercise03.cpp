@@ -35,7 +35,7 @@ int main() {
     auto map_employee_to_salary = [](employee& emp){return emp.getMSalary();};
     transform(female_employees.begin(),female_employees.end(), back_inserter(salaries),map_employee_to_salary);
     auto total_salary = accumulate(salaries.begin(),salaries.end(),double{},plus<double>{});
-    auto avg_salary = total_salary / salaries.size();
+    auto avg_salary = total_salary / static_cast<double>(salaries.size());
     cout << "Average salary is " << avg_salary << endl;
     return 0;
 }

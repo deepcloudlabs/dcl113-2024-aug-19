@@ -15,18 +15,22 @@ struct PrintEmployee { // Function Object
     }
 };
 
+[[maybe_unused]]
 auto order_by_salary_desc(employee &left, employee &right) {
     return left.getMSalary() > right.getMSalary();
 }
 
+[[maybe_unused]]
 auto order_by_salary_asc(employee &left, employee &right) {
     return left.getMSalary() < right.getMSalary();
 }
 
+[[maybe_unused]]
 auto order_by_age_asc(employee &left, employee &right) {
     return left.getMBirthYear() > right.getMBirthYear();
 }
 
+[[maybe_unused]]
 auto order_by_age_desc(employee &left, employee &right) {
     return left.getMBirthYear() < right.getMBirthYear();
 }
@@ -57,6 +61,7 @@ orderBySalary(const employee &emp) {
     return emp.getMSalary();
 }
 
+[[maybe_unused]]
 auto
 orderByAge(const employee &emp) {
     return emp.getMBirthYear();
@@ -64,7 +69,7 @@ orderByAge(const employee &emp) {
 template <typename T>
 struct Direction {
     enum sorting_direction_t {
-        ascending, decending
+        ascending, descending
     };
 
     explicit Direction(sorting_direction_t sortingDirection) : sorting_direction(sortingDirection) {}
