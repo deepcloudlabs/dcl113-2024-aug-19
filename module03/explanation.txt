@@ -1,0 +1,14 @@
+Functional Programming
+ i. Higher-Order Functions -> module 02
+   STL: transform, for_each, copy_if, sort, ...
+
+ii. Pure functions
+    i. c-like functions
+   ii. lambda expression since c++11
+       [capturing scope's variables](parameters){ body }
+  iii. function object
+       struct {
+          operator()
+       }
+       immutable
+       lambda expression -> function object
