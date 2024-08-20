@@ -68061,13 +68061,14 @@ using namespace std;
 
 class employee {
 public:
+    constexpr static const char* gender_name[] = {"female", "male"};
+    constexpr static const char* department_name[] = {"it", "finance","hr","sales"};
     enum gender_t {
         female, male
     };
     enum department_t {
         it, finance, hr, sales
     };
-
     employee(const string &mFirstName, const string &mLastName, department_t mDepartment, gender_t mGender,
              double mSalary, const string &mIban, int mBirthYear);
 
@@ -68147,9 +68148,9 @@ ostream& operator<<(ostream& os,employee& emp){
        << ", last name: " << emp.getMLastName()
        << ", salary: " << emp.getMSalary()
        << ", iban: " << emp.getMIban()
-       << ", department: " << emp.getMDepartment()
+       << ", department: " << employee::department_name[emp.getMDepartment()]
        << ", birth year: " << emp.getMBirthYear()
-       << ", gender: " << emp.getMGender()
+       << ", gender: " << employee::gender_name[emp.getMGender()]
        << "]";
     return os;
 }

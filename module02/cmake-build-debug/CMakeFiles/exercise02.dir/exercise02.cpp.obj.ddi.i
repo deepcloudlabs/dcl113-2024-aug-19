@@ -77629,13 +77629,14 @@ using namespace std;
 
 class employee {
 public:
+    constexpr static const char* gender_name[] = {"female", "male"};
+    constexpr static const char* department_name[] = {"it", "finance","hr","sales"};
     enum gender_t {
         female, male
     };
     enum department_t {
         it, finance, hr, sales
     };
-
     employee(const string &mFirstName, const string &mLastName, department_t mDepartment, gender_t mGender,
              double mSalary, const string &mIban, int mBirthYear);
 
@@ -77680,18 +77681,22 @@ struct PrintEmployee {
     }
 };
 
+[[maybe_unused]]
 auto order_by_salary_desc(employee &left, employee &right) {
     return left.getMSalary() > right.getMSalary();
 }
 
+[[maybe_unused]]
 auto order_by_salary_asc(employee &left, employee &right) {
     return left.getMSalary() < right.getMSalary();
 }
 
+[[maybe_unused]]
 auto order_by_age_asc(employee &left, employee &right) {
     return left.getMBirthYear() > right.getMBirthYear();
 }
 
+[[maybe_unused]]
 auto order_by_age_desc(employee &left, employee &right) {
     return left.getMBirthYear() < right.getMBirthYear();
 }
@@ -77702,6 +77707,41 @@ decltype(auto)
 getOrder(OrderBy orderBy, CompareBy compareBy) {
     return [orderBy, compareBy](const T &left, const T &right) {
         return compareBy(orderBy(left), orderBy(right));
+    };
+}
+
+template<typename T>
+struct Order {
+    virtual bool operator()(const T &left, const T &right) = 0;
+};
+
+template<typename T>
+struct AscendingOrder : public Order<T> {
+    virtual bool operator()(const T &left, const T &right) {
+        return left < right;
+    }
+};
+
+template<typename T>
+struct DescendingOrder : public Order<T> {
+    virtual bool operator()(const T &left, const T &right) {
+        return left > right;
+    }
+};
+
+template<class T, class OrderBy>
+decltype(auto)
+getOrder(OrderBy& orderBy, Order<T>& order) {
+    return [orderBy,order](const T &left, const T &right) {
+        return order(orderBy(left), orderBy(right));
+    };
+}
+
+template<class T, class OrderBy>
+decltype(auto)
+getOrder(OrderBy orderBy, DescendingOrder<T> order) {
+    return [orderBy,order](const T &left, const T &right) {
+        return order(orderBy(left), orderBy(right));
     };
 }
 
@@ -77722,25 +77762,12 @@ orderBySalary(const employee &emp) {
     return emp.getMSalary();
 }
 
+[[maybe_unused]]
 auto
 orderByAge(const employee &emp) {
     return emp.getMBirthYear();
 }
-template <typename T>
-struct Direction {
-    enum sorting_direction_t {
-        ascending, decending
-    };
 
-    explicit Direction(sorting_direction_t sortingDirection) : sorting_direction(sortingDirection) {}
-    bool operator()(const T& left,const T& right){
-        if (sorting_direction == ascending)
-            return left < right;
-        return left > right;
-    }
-private:
-    sorting_direction_t sorting_direction;
-};
 
 int main() {
     vector<employee> employees{
@@ -77757,7 +77784,8 @@ int main() {
     cout << "After sorting: order_by_salary_desc" << endl;
     for_each(employees.begin(), employees.end(), print_employee);
 
-    sort(employees.begin(), employees.end(), getOrder<employee>([](const employee& emp){return emp.getMBirthYear();}, descOrder<int>));
+    sort(employees.begin(), employees.end(),
+         getOrder<employee>([](const employee &emp) { return emp.getMBirthYear(); }, descOrder<int>));
     cout << "After sorting: order_by_age_asc" << endl;
     for_each(employees.begin(), employees.end(), PrintEmployee{});
     return 0;

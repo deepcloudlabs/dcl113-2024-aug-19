@@ -44,6 +44,41 @@ getOrder(OrderBy orderBy, CompareBy compareBy) {
     };
 }
 
+template<typename T>
+struct Order {
+    virtual bool operator()(const T &left, const T &right) = 0;
+};
+
+template<typename T>
+struct AscendingOrder : public Order<T> {
+    virtual bool operator()(const T &left, const T &right) {
+        return left < right;
+    }
+};
+
+template<typename T>
+struct DescendingOrder : public Order<T> {
+    virtual bool operator()(const T &left, const T &right) {
+        return left > right;
+    }
+};
+
+template<class T, class OrderBy>
+decltype(auto)
+getOrder(OrderBy& orderBy, Order<T>& order) {
+    return [orderBy,order](const T &left, const T &right) {
+        return order(orderBy(left), orderBy(right));
+    };
+}
+
+template<class T, class OrderBy>
+decltype(auto)
+getOrder(OrderBy orderBy, DescendingOrder<T> order) {
+    return [orderBy,order](const T &left, const T &right) {
+        return order(orderBy(left), orderBy(right));
+    };
+}
+
 template<class T>
 bool
 ascOrder(const T &x, const T &y) {
@@ -66,21 +101,7 @@ auto
 orderByAge(const employee &emp) {
     return emp.getMBirthYear();
 }
-template <typename T>
-struct Direction {
-    enum sorting_direction_t {
-        ascending, descending
-    };
 
-    explicit Direction(sorting_direction_t sortingDirection) : sorting_direction(sortingDirection) {}
-    bool operator()(const T& left,const T& right){
-        if (sorting_direction == ascending)
-            return left < right;
-        return left > right;
-    }
-private:
-    sorting_direction_t sorting_direction;
-};
 
 int main() {
     vector<employee> employees{
@@ -97,7 +118,8 @@ int main() {
     cout << "After sorting: order_by_salary_desc" << endl;
     for_each(employees.begin(), employees.end(), print_employee);
     // HoF -> 3rd parameter is a function -> getOrder: HoF
-    sort(employees.begin(), employees.end(), getOrder<employee>([](const employee& emp){return emp.getMBirthYear();}, descOrder<int>));
+    sort(employees.begin(), employees.end(),
+         getOrder<employee>([](const employee &emp) { return emp.getMBirthYear(); }, descOrder<int>));
     cout << "After sorting: order_by_age_asc" << endl;
     for_each(employees.begin(), employees.end(), PrintEmployee{});
     return 0;
