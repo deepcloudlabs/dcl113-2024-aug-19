@@ -1,0 +1,11 @@
+{
+"rules": [
+{
+"primary-output": "CMakeFiles\\world-exercise01-ranges.dir\\world-exercises\\exercise01-ranges.cpp.obj",
+"requires": [
+]
+}
+],
+"version": 0,
+"revision": 0
+}

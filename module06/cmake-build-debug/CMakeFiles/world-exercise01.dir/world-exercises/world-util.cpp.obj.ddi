@@ -1,0 +1,11 @@
+{
+"rules": [
+{
+"primary-output": "CMakeFiles\\world-exercise01.dir\\world-exercises\\world-util.cpp.obj",
+"requires": [
+]
+}
+],
+"version": 0,
+"revision": 0
+}
