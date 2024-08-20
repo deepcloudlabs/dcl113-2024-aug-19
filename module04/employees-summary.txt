@@ -1,0 +1,5 @@
+employee[ sawyer, james, department: it ]
+employee[ austen, kate, department: sales ]
+employee[ burke, juliet, department: finance ]
+employee[ shephard, jack, department: hr ]
+employee[ bauer, jack, department: it ]

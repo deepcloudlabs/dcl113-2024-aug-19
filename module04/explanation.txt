@@ -1,0 +1,5 @@
+Functional Programming
+ i. Higher-Order Functions -> module 02
+   STL: transform, for_each, copy_if, sort, ...
+
+   fun(x,y=2) -> transform -> (y,x)
