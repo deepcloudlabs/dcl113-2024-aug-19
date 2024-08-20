@@ -1,5 +1,0 @@
-ninja_dyndep_version = 1.0
-build CMakeFiles/exercise08.dir/exercise08.cpp.obj: dyndep
-
-build CMakeFiles/exercise08.dir/employee.cpp.obj: dyndep
-
