@@ -1,0 +1,10 @@
+Functional Programming
+II. Pure Function
+    c-like function
+    lambda expression
+    function object
+    class method
+
+    - recursive functions
+    - memoization -> remembering -> caching/object pooling
+    - generator function
